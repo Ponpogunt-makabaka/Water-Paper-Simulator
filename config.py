@@ -9,7 +9,7 @@ All hyperparameters and settings are documented here.
 # ==============================================================================
 
 # --- Research Topic ---
-TOPIC = "hidementional computing on symbolic vector help neuro-symbolic-ai change better."
+TOPIC = "Topic"
 # Sample topic : The plug-and-play modules used in deep learning are optimized through trition operators so that the entire stitched model can be placed in a GPU-kernal
 # The main research topic that will be investigated
 
@@ -38,7 +38,7 @@ ARXIV_MAX_RESULTS = 3  # Maximum papers from ArXiv per query
 # Limits the number of papers retrieved to manage tokens
 
 # --- Content Length Limits ---
-MAX_PLAN_LENGTH = 800  # Characters for research plans
+MAX_PLAN_LENGTH = 2000  # Characters for research plans
 # Controls the detail level of initial research proposals
 
 MAX_SECTION_LENGTH = 4000  # Default characters per paper section
@@ -72,7 +72,7 @@ REVIEW_PASS_THRESHOLD = 0.5  # Score needed to pass review (0.0-1.0) Hint:lower 
 # Papers scoring above this threshold pass without revision
 
 # --- Token Optimization ---
-MAX_PROMPT_LENGTH = 2000  # Maximum characters in prompts to LLM
+MAX_PROMPT_LENGTH = 3000  # Maximum characters in prompts to LLM
 # Prevents token overflow in model inputs
 
 TRUNCATE_REFERENCES = True  # Whether to truncate long references

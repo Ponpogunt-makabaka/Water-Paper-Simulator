@@ -52,7 +52,7 @@ class WriterAgent(BaseAgent):
             return {
                 "current_draft": draft,
                 "draft_version": version,
-                "draft_history": draft # 将当前稿件添加到历史记录
+                "draft_history": [draft] 
             }
             
         except Exception as e:
