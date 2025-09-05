@@ -1,0 +1,32 @@
+# requirements.txt
+# Core dependencies for the research paper generation system
+
+# LangChain ecosystem
+langchain>=0.1.0
+langchain-core>=0.1.0
+langgraph>=0.0.40
+langchain-community>=0.0.30 # 添加，用于RAG
+
+# LLM providers
+langchain-ollama>=0.1.0
+langchain-openai>=0.1.0
+
+# Research tools
+arxiv>=2.1.0  # For academic paper search
+semanticscholar>=0.5.0 # 新增：用于更广泛的文献检索
+requests>=2.25.0 # 新增：用于下载PDF
+
+# PDF Parsing
+grobid-client-python>=0.0.8 # 新增：用于调用GROBID服务解析PDF
+
+# RAG & Vector Store
+faiss-cpu>=1.7.4 # 新增：用于创建向量索引
+sentence-transformers>=2.2.2 # 新增：用于文本向量化
+
+# Standard utilities
+typing-extensions>=4.0.0
+pathlib2>=2.3.7
+pydantic>=2.0.0
+
+# Optional monitoring
+# langsmith>=0.1.0  # Uncomment for tracing
