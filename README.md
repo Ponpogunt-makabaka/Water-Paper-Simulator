@@ -1,9 +1,3 @@
-Of course. Here is a complete, updated English version of the `README.md` file. It reflects the project's current architecture, including the advanced RAG pipeline and detailed setup instructions.
-
-Please copy the content below and replace the content of your `README.md` file with it.
-
------
-
 # 🤖 AI-Powered Research Paper Generation System
 
 [](https://opensource.org/licenses/MIT)

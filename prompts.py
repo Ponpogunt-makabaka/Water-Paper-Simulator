@@ -1,8 +1,9 @@
 # prompts.py
 """
-Optimized prompt templates for all agents.
+Complete and fixed prompt templates for all agents.
 Uses multiple-choice and yes/no formats to minimize token usage.
-Fixed JSON formatting issues by properly escaping braces.
+Enhanced with consistency management and quality control prompts.
+FIXED: All template formatting issues and missing variables.
 """
 
 # ==============================================================================
@@ -66,7 +67,7 @@ If any NO, provide search query (<30 words).
 Output: [SOLID] or [NEEDS: query]"""
 
 # ==============================================================================
-# WRITER PROMPTS - FIXED RAG INTEGRATION
+# BASIC WRITER PROMPTS
 # ==============================================================================
 
 WRITER_SECTION_PROMPT = """Write section: {section_title}
@@ -112,7 +113,276 @@ Apply changes to:
 Output revised text:"""
 
 # ==============================================================================
-# REVIEWER PROMPTS - FIXED JSON FORMATTING
+# ENHANCED WRITER PROMPTS WITH CONSISTENCY MANAGEMENT
+# ==============================================================================
+
+WRITER_ENHANCED_SECTION_PROMPT = """Write section: {section_title}
+
+PAPER CONTEXT:
+Topic: {topic}
+Research Domain: {research_domain}
+Main Contribution: {main_contribution}
+
+SECTION REQUIREMENTS:
+Plan: {section_plan}
+Style: {style}
+Focus: {focus_points}
+Logical Role: {logical_role}
+
+CONSISTENCY GUIDELINES:
+{consistency_guidelines}
+
+CONCEPT REQUIREMENTS:
+{concept_context}
+
+Context from literature:
+--- LITERATURE CONTEXT ---
+{context}
+--- END CONTEXT ---
+
+REQUIREMENTS:
+- Length: {max_length} chars max
+- Citations: Use [Author, Year] format consistently
+- Terminology: Use consistent terms (avoid synonyms for key concepts)
+- Flow: Ensure logical progression with clear transitions
+- Concepts: Define new concepts before using them
+- Dependencies: Ensure prerequisite concepts are established
+- Coherence: Maintain narrative thread throughout
+
+Content:"""
+
+# ==============================================================================
+# CONSISTENCY MANAGEMENT PROMPTS
+# ==============================================================================
+
+CONSISTENCY_CHECK_PROMPT = """Check this section for consistency issues:
+
+Section: {section_title}
+Expected Plan: {section_plan}
+
+Content to check:
+{content}
+
+Consistency Criteria:
+1. Outline Alignment: Does content match the planned topics?
+2. Concept Dependencies: Are new concepts properly introduced?
+3. Terminology: Are terms used consistently?
+4. Logical Flow: Are ideas presented in logical order?
+5. Narrative Coherence: Does it fit the overall paper narrative?
+
+Rate each criterion (0.0-1.0) and identify specific issues:
+
+SCORES: [outline_score, concept_score, terminology_score, flow_score, coherence_score]
+ISSUES: [List specific problems found]
+SUGGESTIONS: [List improvements needed]
+
+Response:"""
+
+CONCEPT_DEPENDENCY_PROMPT = """Analyze concept dependencies in this text:
+
+Text: {text}
+
+For each concept mentioned, identify:
+1. Is it properly defined before use?
+2. Are its dependencies satisfied?
+3. Is terminology consistent?
+
+Output format:
+CONCEPTS_USED: [list of concepts found]
+DEPENDENCY_ISSUES: [concepts used without proper introduction]
+TERMINOLOGY_ISSUES: [inconsistent usage of terms]
+SUGGESTIONS: [how to fix issues]
+
+Analysis:"""
+
+LOGICAL_FLOW_ENHANCEMENT_PROMPT = """Enhance the logical flow of this text by adding appropriate transitions:
+
+Section: {section_title}
+Previous Section: {previous_section}
+Next Section: {next_section}
+
+Text to enhance:
+{content}
+
+Requirements:
+- Add smooth transitions between paragraphs
+- Connect to previous section context
+- Prepare transition to next section
+- Use appropriate connecting phrases
+- Maintain academic tone
+
+Enhanced text:"""
+
+TERMINOLOGY_NORMALIZATION_PROMPT = """Normalize terminology in this academic text:
+
+Text: {text}
+
+Requirements:
+- Use consistent terms for the same concepts
+- Standardize technical terminology
+- Ensure acronyms are properly introduced
+- Maintain academic precision
+- Avoid unnecessary synonyms
+
+Key terms to standardize: {key_terms}
+
+Normalized text:"""
+
+# ==============================================================================
+# CONSISTENCY ANALYSIS PROMPTS
+# ==============================================================================
+
+OUTLINE_CONSISTENCY_PROMPT = """Check if this content aligns with its planned outline:
+
+Planned Outline:
+{outline}
+
+Actual Content:
+{content}
+
+Evaluation:
+1. Coverage: Does content cover planned topics? [0.0-1.0]
+2. Focus: Does content stay focused on outlined scope? [0.0-1.0]
+3. Structure: Does content follow planned structure? [0.0-1.0]
+
+COVERAGE_SCORE: [score]
+FOCUS_SCORE: [score]
+STRUCTURE_SCORE: [score]
+MISSING_TOPICS: [topics from outline not covered]
+EXTRA_TOPICS: [topics in content not in outline]
+SUGGESTIONS: [how to improve alignment]
+
+Assessment:"""
+
+CONCEPT_INTRODUCTION_PROMPT = """Analyze how concepts are introduced in this text:
+
+Text: {text}
+Section: {section_title}
+
+For each concept, determine:
+1. Is it defined clearly?
+2. Are examples provided?
+3. Are dependencies established?
+4. Is the introduction appropriate for this section?
+
+CONCEPTS_INTRODUCED: [list with quality ratings]
+WELL_DEFINED: [concepts with clear definitions]
+NEEDS_CLARIFICATION: [concepts needing better explanation]
+DEPENDENCY_GAPS: [missing prerequisite concepts]
+
+Analysis:"""
+
+NARRATIVE_COHERENCE_PROMPT = """Check narrative coherence across sections:
+
+Paper Topic: {topic}
+Main Contribution: {contribution}
+
+Section Contents:
+{section_contents}
+
+Coherence Check:
+1. Consistent narrative thread? [YES/NO]
+2. Logical section progression? [YES/NO]
+3. Unified terminology? [YES/NO]
+4. Clear contribution storyline? [YES/NO]
+
+COHERENCE_SCORE: [0.0-1.0]
+NARRATIVE_ISSUES: [list of problems]
+FLOW_PROBLEMS: [section transition issues]
+RECOMMENDATIONS: [specific improvements]
+
+Assessment:"""
+
+# ==============================================================================
+# ENHANCED REVISION PROMPTS
+# ==============================================================================
+
+ENHANCED_REVISION_PROMPT = """Revise this academic paper draft with enhanced consistency management:
+
+FEEDBACK TO ADDRESS:
+{feedback_points}
+
+CONSISTENCY REQUIREMENTS:
+- Maintain consistent terminology throughout
+- Preserve logical flow and transitions  
+- Ensure concept dependencies are satisfied
+- Keep coherent narrative thread
+
+REVISION GUIDELINES:
+{revision_guidelines}
+
+LITERATURE CONTEXT:
+--- CONTEXT ---
+{context}
+--- END CONTEXT ---
+
+ORIGINAL DRAFT:
+{draft}
+
+Provide a revised version that addresses the feedback while maintaining consistency:"""
+
+INCREMENTAL_IMPROVEMENT_PROMPT = """Apply incremental improvements to this draft:
+
+Target Issue: {issue_type}
+Specific Feedback: {feedback_detail}
+
+Current Text:
+{text_section}
+
+Improvement Strategy:
+{improvement_strategy}
+
+Apply the improvement while maintaining:
+- Consistent terminology
+- Logical flow
+- Academic tone
+- Factual accuracy
+
+Improved text:"""
+
+CITATION_IMPROVEMENT_PROMPT = """Improve the citation patterns in this academic text:
+
+Text: {text}
+
+Requirements:
+- Add citations where claims are made
+- Use consistent [Author, Year] format
+- Ensure appropriate citation density
+- Cite recent and relevant sources
+- Avoid over-citation or under-citation
+
+Guidelines:
+- Factual claims need citations
+- Novel contributions should reference prior work
+- Methodological choices should be justified
+- Results should reference supporting literature
+
+Improved text with enhanced citations:"""
+
+CLARITY_ENHANCEMENT_PROMPT = """Enhance the clarity of this academic text:
+
+Text: {text}
+
+Clarity Issues to Address:
+{clarity_issues}
+
+Enhancement Strategies:
+- Break down complex sentences
+- Add explanatory phrases
+- Improve paragraph structure
+- Clarify technical concepts
+- Enhance logical connections
+
+Maintain:
+- Technical accuracy
+- Academic tone
+- Consistent terminology
+- Logical flow
+
+Enhanced text:"""
+
+# ==============================================================================
+# REVIEWER PROMPTS - SIMPLIFIED FOR RELIABILITY
 # ==============================================================================
 
 BREADTH_REVIEW_PROMPT = """Review macro aspects of this paper.
@@ -127,15 +397,11 @@ Check these criteria (score each 0.0-1.0):
 Draft to review:
 {draft}
 
-Respond in this exact JSON format (replace values but keep structure):
-{{
-    "scores": [0.8, 0.7, 0.9, 0.8, 0.7],
-    "issues": [
-        {{"category": "Structure", "description": "The introduction lacks clear thesis statement"}}
-    ],
-    "suggestions": ["Improve the abstract clarity", "Add more recent references"],
-    "strengths": ["Good methodology section", "Clear experimental design"]
-}}
+Respond in this format:
+SCORES: [score1, score2, score3, score4, score5]
+ISSUES: [List specific problems found]
+SUGGESTIONS: [List improvements needed]
+STRENGTHS: [List positive aspects]
 
 Each score should be between 0.0 and 1.0. If any score is below 0.7, explain the issue."""
 
@@ -151,33 +417,34 @@ Check these criteria (score each 0.0-1.0):
 Technical sections to review:
 {draft}
 
-Respond in this exact JSON format (replace values but keep structure):
-{{
-    "scores": [0.8, 0.7, 0.9, 0.8, 0.7],
-    "issues": [
-        {{"category": "Methodology", "description": "The experimental setup lacks proper controls"}}
-    ],
-    "suggestions": ["Add more detailed algorithm explanation", "Include computational complexity analysis"],
-    "strengths": ["Rigorous mathematical formulation", "Comprehensive evaluation metrics"]
-}}
+Respond in this format:
+SCORES: [score1, score2, score3, score4, score5]
+ISSUES: [List specific technical problems]
+SUGGESTIONS: [List technical improvements needed]
+STRENGTHS: [List technical strengths]
 
 Each score should be between 0.0 and 1.0. Focus on technical accuracy and methodological soundness."""
 
 # ==============================================================================
-# TRIAGE PROMPTS
+# TRIAGE PROMPTS - ENHANCED WITH CONSISTENCY METRICS
 # ==============================================================================
 
-TRIAGE_DECISION_PROMPT = """Analyze feedback severity.
+TRIAGE_DECISION_PROMPT = """Analyze feedback severity with consistency metrics.
 
 Breadth: {feedback_breadth}
 Depth: {feedback_depth}
 Breadth Score: {score_breadth}
 Depth Score: {score_depth}
+Consistency Score: {consistency_score}
+Outline Alignment: {outline_alignment}
 
 Classify required action:
-[1] RERESEARCH - Major flaws, need new literature (avg score < 0.4)
-[2] REWRITE - Minor issues, improve existing text (avg score 0.4-0.7)
-[3] END - No significant issues (avg score > 0.7)
+[1] RERESEARCH - Major flaws, need new literature (combined score < 0.4)
+[2] REWRITE - Minor issues, improve existing text (combined score 0.4-0.7)
+[3] END - No significant issues (combined score > 0.7)
+
+Consider both review scores and consistency metrics.
+Combined Score = (Review Score * 0.7) + (Consistency Score * 0.3)
 
 Decision: [#]"""
 
@@ -255,3 +522,69 @@ Synthesize into coherent narrative that:
 - Suggests areas for further investigation
 
 Synthesis:"""
+
+# ==============================================================================
+# QUALITY ASSURANCE PROMPTS
+# ==============================================================================
+
+QUALITY_CHECK_PROMPT = """Perform comprehensive quality check on this academic text:
+
+Text: {text}
+
+Check for:
+1. Factual consistency
+2. Logical flow
+3. Citation appropriateness
+4. Terminology consistency
+5. Concept dependency satisfaction
+6. Narrative coherence
+7. Technical accuracy
+
+Rate each aspect (0.0-1.0) and provide specific feedback:
+
+QUALITY_SCORES: [fact, flow, citation, terminology, concepts, narrative, technical]
+CRITICAL_ISSUES: [Issues that must be fixed]
+MINOR_ISSUES: [Issues that should be improved]
+STRENGTHS: [What works well]
+OVERALL_ASSESSMENT: [Summary evaluation]
+
+Quality assessment:"""
+
+FINAL_POLISH_PROMPT = """Apply final polish to this academic paper:
+
+Draft: {draft}
+
+Polish areas:
+- Language fluency and academic tone
+- Transition smoothness
+- Citation formatting
+- Terminology consistency
+- Paragraph structure
+- Overall coherence
+
+Requirements:
+- Maintain all technical content
+- Preserve original meaning
+- Enhance readability
+- Ensure professional presentation
+
+Polished version:"""
+
+# ==============================================================================
+# SIMPLE FALLBACK PROMPTS FOR TESTING
+# ==============================================================================
+
+SIMPLE_SECTION_PROMPT = """Write a {section_title} section about {topic}.
+
+Keep it academic and informative.
+Length: approximately {max_length} characters.
+
+Content:"""
+
+SIMPLE_REVIEW_PROMPT = """Review this academic text and provide a score from 0.0 to 1.0:
+
+Text: {draft}
+
+Score: [your_score]
+Comments: [brief feedback]"""
+
